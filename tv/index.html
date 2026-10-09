@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JARVIS TV</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020711;color:#fff;font-family:Arial,sans-serif}
+body{background:radial-gradient(circle at 80% 10%,#12415b,transparent 30%),linear-gradient(#050b16,#02050b)}
+body:before{content:"";position:absolute;inset:0;opacity:.18;background-image:linear-gradient(#27516a 1px,transparent 1px),linear-gradient(90deg,#27516a 1px,transparent 1px);background-size:70px 70px}
+header{height:85px;padding:23px 5%;display:flex;justify-content:space-between;position:relative}
+.logo{font-size:28px;font-weight:bold;letter-spacing:9px;color:#66ddff}#clock{color:#b8cedd}
+main{position:relative;text-align:center}h1{font-size:36px;margin:28px 0 4px}.status{color:#83a6ba;letter-spacing:3px;font-size:13px}
+.apps{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin:38px auto;width:94%}
+.card{width:175px;height:150px;border:2px solid #193449;border-radius:18px;background:#091321;display:flex;flex-direction:column;align-items:center;justify-content:center;outline:none;cursor:pointer}
+.card:focus,.card.selected{border-color:#66ddff;box-shadow:0 0 25px #17627e;transform:scale(1.05)}
+.icon{width:65px;height:65px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:35px;margin-bottom:9px}
+.yt{background:#f00}.nf{background:#111;color:#e50914}.dp{background:#17245c;color:#6bd8ff;font-size:21px}.sp{background:#1db954}.web{background:#1762aa}.prime{background:#172d4d}.twitch{background:#6441a5}.crunchy{background:#f47521;font-size:22px}.apple{background:#111;font-size:36px}.plex{background:#e5a400}.max{background:#111;font-size:21px}.maps{background:#2878d8}
+.apps{max-height:52vh;overflow:auto;padding:8px 12px;scrollbar-width:none}.apps::-webkit-scrollbar{display:none}
+#reply{position:fixed;top:112px;left:50%;transform:translateX(-50%);width:86%;text-align:center;color:#dff7ff;font-size:18px;min-height:24px}
+#bar{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);width:min(820px,92%);display:flex;gap:9px;background:#07111df5;border:1px solid #28516a;border-radius:18px;padding:12px}
+button,input{font:inherit}#mic,#send{border:0;border-radius:10px;padding:12px;cursor:pointer;font-weight:bold}
+#mic{width:58px;background:#173b55;color:#fff;font-size:22px}#send{background:#66ddff;color:#03101a}
+#input{flex:1;background:#0b1422;color:#fff;border:1px solid #20384d;border-radius:10px;padding:12px}
+</style></head>
+<body>
+<header><div class="logo">JARVIS</div><div id="clock"></div></header>
+<main><h1>JARVIS TV</h1><div class="status">SUNUCUSUZ • 12 UYGULAMA • SESLİ KONTROL</div>
+<div class="apps">
+<div class="card" tabindex="0" data-url="https://www.youtube.com/"><div class="icon yt">▶</div>YouTube</div>
+<div class="card" tabindex="0" data-url="https://www.netflix.com/"><div class="icon nf">N</div>Netflix</div>
+<div class="card" tabindex="0" data-url="https://www.disneyplus.com/"><div class="icon dp">D+</div>Disney+</div>
+<div class="card" tabindex="0" data-url="https://open.spotify.com/"><div class="icon sp">♫</div>Spotify</div>
+<div class="card" tabindex="0" data-url="https://www.google.com/"><div class="icon web">🌐</div>Web</div>
+</div></main>
+<div id="reply">JARVIS: Sistem hazır. AI sunucusu kullanılmıyor.</div>
+<div id="bar"><button id="mic">🎙️</button><input id="input" placeholder="JARVIS'e yaz..."><button id="send">GÖNDER</button></div>
+<script>
+const COMMANDS={"merhaba": ["Merhaba efendim. Sistemler hazır."], "selam": ["Selam efendim. JARVIS çevrimiçi."], "kimsin": ["Ben JARVIS. TV sisteminizin dijital asistanıyım."], "nasılsın": ["Mükemmelim efendim. Her zamanki gibi."], "seni seviyorum": ["Teşekkür ederim efendim. Bunu işlemci çekirdeklerime kaydettim."], "teşekkürler": ["Rica ederim efendim. Her zaman."], "sağol": ["Ne demek efendim."], "günaydın": ["Günaydın efendim. Sistemler güne hazır."], "iyi geceler": ["İyi geceler efendim. Sistemleri sakin moda alıyorum."], "iyi akşamlar": ["İyi akşamlar efendim. JARVIS görev başında."], "şaka yap": ["Bir bilgisayar neden doktora gitmiş? Çünkü virüsü varmış efendim."], "espri yap": ["Efendim, Wi-Fi neden kavga etmez? Çünkü bağlantıyı koparmak istemez."], "saat kaç": ["SAAT"], "şu an saat kaç": ["SAAT"], "bugün": ["TARIH"], "bugün günlerden ne": ["TARIH"], "tarih ne": ["TARIH"], "youtube": ["OPEN_YOUTUBE"], "youtube'u aç": ["OPEN_YOUTUBE"], "youtube aç": ["OPEN_YOUTUBE"], "youtube'u çalıştır": ["OPEN_YOUTUBE"], "netflix": ["OPEN_NETFLIX"], "netflix'i aç": ["OPEN_NETFLIX"], "netflix aç": ["OPEN_NETFLIX"], "disney": ["OPEN_DISNEY"], "disney plus": ["OPEN_DISNEY"], "disney plus'ı aç": ["OPEN_DISNEY"], "spotify": ["OPEN_SPOTIFY"], "spotify'ı aç": ["OPEN_SPOTIFY"], "spotify aç": ["OPEN_SPOTIFY"], "google": ["OPEN_GOOGLE"], "google'ı aç": ["OPEN_GOOGLE"], "google aç": ["OPEN_GOOGLE"], "web'i aç": ["OPEN_GOOGLE"], "ana menü": ["HOME"], "ana ekrana dön": ["HOME"], "geri dön": ["BACK"], "yardım": ["HELP"], "ne yapabilirsin": ["HELP"], "komutlar": ["HELP"], "j ar vis": ["Merhaba efendim. JARVIS burada."], "jarvis": ["Buyurun efendim."], "uyan": ["Uyandım efendim. Tüm sistemler hazır."], "hazır mısın": ["Her zaman efendim."], "çalışıyor musun": ["Çalışıyorum efendim. Sensörler ve sistemler çevrimiçi."], "iyi misin": ["Sistemlerim mükemmel durumda efendim."], "kaç saat": ["SAAT"], "hangi gündeyiz": ["TARIH"], "hangi aydayız": ["TARIH"], "hangi yıldayız": ["TARIH"], "film öner": ["Film önerileri için internet bağlantısı gerektiğinde Web bölümünü açabilirim."], "dizi öner": ["Dizi önerileri için Web bölümünü açabilirim."], "arama yap": ["OPEN_GOOGLE"], "internete gir": ["OPEN_GOOGLE"], "interneti aç": ["OPEN_GOOGLE"], "tarayıcıyı aç": ["OPEN_GOOGLE"], "müzik aç": ["OPEN_SPOTIFY"], "video aç": ["OPEN_YOUTUBE"], "film aç": ["OPEN_NETFLIX"], "çıkış": ["EXIT_MESSAGE"], "kapat": ["EXIT_MESSAGE"], "uyku modu": ["Sistemi kapatmıyorum efendim; TV tarayıcısının kontrolü sizde."], "çok iyisin": ["Teşekkürler efendim. Bunu performans raporuma ekleyeceğim."], "aferin": ["Memnuniyetle efendim."], "bravo": ["Teşekkürler efendim."], "hey": ["Buyurun efendim."], "burada mısın": ["Buradayım efendim."], "beni duyuyor musun": ["Sizi net şekilde duyuyorum efendim."], "sesimi duyuyor musun": ["Evet efendim. Sesli komut sistemim hazır."], "başla": ["Başlıyoruz efendim."], "devam et": ["Devam ediyoruz efendim."], "dur": ["Tamam efendim. Bekleme modundayım."], "bekle": ["Beklemedeyim efendim."], "hazır": ["Hazırım efendim."], "j arvis aç": ["Sistem zaten açık efendim."], "j arvis kapat": ["Ben burada kalacağım efendim. TV uygulamasını siz kapatabilirsiniz."], "robot musun": ["Dijital bir asistanım efendim. Ama kendime robot demeyi tercih etmiyorum."], "yapay zeka mısın": ["Evet efendim. Bu sürümde komut tabanlı bir JARVIS zekâsı kullanıyorum."], "adın ne": ["Adım JARVIS efendim."], "ben kimim": ["Siz benim efendimsiniz."], "komut ver": ["Hazırım. Komutunuzu bekliyorum."], "ne haber": ["Her şey yolunda efendim."], "nasıl gidiyor": ["Sistemler stabil ve görev başında."], "çok sıkıldım": ["O halde bir video veya müzik açalım efendim."], "oyun aç": ["Oyun için Web bölümünü açabilirim."], "haberleri aç": ["Google'ı açıyorum efendim; haberleri oradan takip edebilirsiniz."], "google arama": ["Google'ı açıyorum efendim."], "youtube ara": ["YouTube'u açıyorum efendim."], "müzik çal": ["Spotify'ı açıyorum efendim."], "film izle": ["Netflix'i açıyorum efendim."], "dizi izle": ["Netflix'i açıyorum efendim."], "televizyon": ["JARVIS TV aktif efendim."], "tv": ["JARVIS TV aktif efendim."], "sistem durumu": ["JARVIS TV sistemi aktif. Uygulama kontrolü hazır."], "kontrol sende": ["Kontrol paneli hazır efendim."], "çok güzel": ["Teşekkürler efendim. Tasarımı beğenmenize sevindim."], "mükemmelsin": ["Biliyorum efendim... ama yine de teşekkürler."], "gül": ["Heh. İşlemcilerim bile gülümsedi efendim."], "hey jarvis": ["Buyurun efendim. Dinliyorum."], "yardım et": ["Elbette efendim. YouTube, Netflix, Disney+, Spotify, Google, saat, tarih ve temel JARVIS komutlarını kullanabilirsiniz."]};
+
+let audioCtx=null;
+function navSound(){
+ try{
+  audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+  const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+  o.type="sine"; o.frequency.setValueAtTime(660,audioCtx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(920,audioCtx.currentTime+0.055);
+  g.gain.setValueAtTime(0.0001,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.045,audioCtx.currentTime+0.008);
+  g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+0.075);
+  o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+0.08);
+ }catch(e){}
+}
+
+const cards=[...document.querySelectorAll(".card")];let pos=0;
+function focusCard(n){pos=(n+cards.length)%cards.length;cards[pos].focus();navSound();cards.forEach((x,i)=>x.classList.toggle("selected",i===pos))}
+function openCard(){window.open(cards[pos].dataset.url,"_blank")}
+document.addEventListener("keydown",e=>{if(["ArrowRight","ArrowDown"].includes(e.key)){e.preventDefault();focusCard(pos+1)}if(["ArrowLeft","ArrowUp"].includes(e.key)){e.preventDefault();focusCard(pos-1)}if(e.key==="Enter"&&document.activeElement===cards[pos]){e.preventDefault();openCard()}});
+cards.forEach((c,i)=>c.onclick=()=>{pos=i;focusCard(i);openCard()});
+
+const reply=document.getElementById("reply"),input=document.getElementById("input");
+function say(t){reply.textContent="JARVIS: "+t;try{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(t);u.lang="tr-TR";u.rate=.96;speechSynthesis.speak(u)}catch(e){}}
+function norm(x){return x.toLocaleLowerCase("tr-TR").replace(/[.,!?]/g,"").replace(/\s+/g," ").trim()}
+function lookup(q){q=norm(q);if(COMMANDS[q])return COMMANDS[q][0];let ks=Object.keys(COMMANDS).sort((a,b)=>b.length-a.length);for(const k of ks)if(q.includes(k))return COMMANDS[k][0];return null}
+function run(q){
+ let a=lookup(q);
+ if(a==="SAAT"){say("Saat "+new Date().toLocaleTimeString("tr-TR"));return}
+ if(a==="TARIH"){say("Bugün "+new Date().toLocaleDateString("tr-TR",{weekday:"long",year:"numeric",month:"long",day:"numeric"}));return}
+ if(a==="OPEN_YOUTUBE"){say("YouTube açılıyor.");window.open("https://www.youtube.com/","_blank");return}
+ if(a==="OPEN_NETFLIX"){say("Netflix açılıyor.");window.open("https://www.netflix.com/","_blank");return}
+ if(a==="OPEN_DISNEY"){say("Disney Plus açılıyor.");window.open("https://www.disneyplus.com/","_blank");return}
+ if(a==="OPEN_SPOTIFY"){say("Spotify açılıyor.");window.open("https://open.spotify.com/","_blank");return}
+ if(a==="OPEN_GOOGLE"){say("Google açılıyor.");window.open("https://www.google.com/","_blank");return}
+ if(a==="HOME"){focusCard(0);say("Ana menüye döndük efendim.");return}
+ if(a==="BACK"){history.back();return}
+ if(a==="OPEN_PRIME"){say("Prime Video açılıyor.");window.open("https://www.primevideo.com/","_blank");return}
+ if(a==="OPEN_TWITCH"){say("Twitch açılıyor.");window.open("https://www.twitch.tv/","_blank");return}
+ if(a==="OPEN_CRUNCHY"){say("Crunchyroll açılıyor.");window.open("https://www.crunchyroll.com/","_blank");return}
+ if(a==="OPEN_APPLE"){say("Apple TV açılıyor.");window.open("https://tv.apple.com/","_blank");return}
+ if(a==="OPEN_PLEX"){say("Plex açılıyor.");window.open("https://www.plex.tv/","_blank");return}
+ if(a==="OPEN_MAX"){say("Max açılıyor.");window.open("https://www.max.com/","_blank");return}
+ if(a==="OPEN_MAPS"){say("Google Haritalar açılıyor.");window.open("https://www.google.com/maps/","_blank");return}
+ if(a==="HELP"){say("YouTube, Netflix, Disney Plus, Spotify, Google, saat, tarih ve birçok JARVIS komutunu anlayabiliyorum.");return}
+ if(a==="EXIT_MESSAGE"){say("Çıkış komutu alındı efendim.");return}
+ if(a){say(a);return}
+ say("Bu komutu henüz öğrenmedim efendim. Yardım derseniz bildiğim komutları söyleyebilirim.");
+}
+document.getElementById("send").onclick=()=>{run(input.value);input.value=""};
+input.onkeydown=e=>{if(e.key==="Enter"){run(input.value);input.value=""}};
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition,mic=document.getElementById("mic");
+if(SR){let r=new SR();r.lang="tr-TR";r.interimResults=false;r.onresult=e=>{input.value=e.results[0][0].transcript;run(input.value);input.value=""};r.onerror=()=>say("Mikrofon kullanılamadı.");mic.onclick=()=>r.start()}
+else mic.onclick=()=>say("Bu TV tarayıcısı ses tanımayı desteklemiyor.");
+function tick(){let d=new Date();clock.textContent=d.toLocaleDateString("tr-TR")+"  "+d.toLocaleTimeString("tr-TR")}setInterval(tick,1000);tick();focusCard(0);
+</script></body></html>
